@@ -2,14 +2,16 @@
   <v-toolbar dense class="toolbar">
     <v-toolbar-title class="title">Parking assistant</v-toolbar-title>
     <v-spacer />
-    <v-toolbar-items class="hidden-xs-only">
+    <v-toolbar-items v-if="$route.path === '/dashboard'" class="hidden-xs-only">
       <v-btn
-        v-if="$route.path === '/dashboard'"
-        class="btn-action"
         text
-        @click="signOutUser"
-      >
-        <span>Log Out</span>
+        class="btn-action teal accent-4"
+        @click="showAddStreetModal = true"
+        ><span class="btn-text">Add zone</span>
+        <i class="fas fa-solid fa-plus"></i>
+      </v-btn>
+      <v-btn class="btn-action" text @click="signOutUser">
+        <span class="btn-text">Log Out</span>
         <i class="fas fa-sign-out-alt" />
       </v-btn>
     </v-toolbar-items>
@@ -60,7 +62,12 @@ export default {
   color: white !important;
 }
 
-span {
+.btn-text {
   margin-right: 6px;
+}
+
+.toolbar .btn-action {
+  padding: 0 !important;
+  margin-left: 16px;
 }
 </style>

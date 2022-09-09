@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app class="app">
     <v-main class="main">
       <v-card class="loginWrapper" elevation="4">
         <div>
@@ -61,6 +61,10 @@ export default {
 </script>
 
 <style scoped>
+.app >>> .v-application--wrap {
+  min-height: calc(100vh - 48px) !important;
+}
+
 .main >>> .v-main__wrap {
   display: flex;
   align-items: center;

@@ -2,7 +2,7 @@
   <v-app>
     <v-container fluid grid-list-md class="pa-5">
       <v-layout>
-        <v-row>
+        <!-- <v-row>
           <v-btn
             text
             class="btn-action teal accent-4"
@@ -10,9 +10,9 @@
           >
             Add new zone
           </v-btn>
-        </v-row>
+        </v-row> -->
         <v-row>
-          <v-flex class="xs4" v-for="street in getStreets" :key="street.id">
+          <v-flex class="xs2" v-for="street in getStreets" :key="street.id">
             <Street :street="street" @reload="loadStreets" />
           </v-flex>
         </v-row>
