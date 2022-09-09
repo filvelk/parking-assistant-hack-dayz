@@ -1,8 +1,8 @@
-import Dashboard from "./components/Dashboard"
+import Dashboard from "./components/Dashboard";
 
 export const StreetRoutes = [
-    {
-        path: '/dashboard',
-        component: Dashboard
-    }
-]
+  {
+    path: "/dashboard",
+    component: Dashboard,
+  },
+];

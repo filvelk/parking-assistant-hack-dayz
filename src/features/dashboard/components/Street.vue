@@ -5,7 +5,7 @@
         {{ street.zone }}
       </h3>
       <v-card-actions class="d-flex flex-column p-0">
-        <v-btn text class="btn-action first" @click="onEdit">
+        <v-btn text class="btn-action first" @click="showUpdateStreetModal = true">
           <i class="fas fa-edit"></i>
         </v-btn>
         <v-btn
@@ -17,18 +17,20 @@
         </v-btn>
       </v-card-actions>
     </v-card-text>
-    <AddStreetModal
+    <UpdateStreetModal
       class="cardModal"
-      v-if="showAddStreetModal"
-      :show="showAddStreetModal"
+      v-if="showUpdateStreetModal"
+      :show="showUpdateStreetModal"
       :street="street"
-      @addStreet="addStreet"
-      @onClose="showAddStreetModal = false"
+      @updateStreet="updateStreet"
+      @onClose="showUpdateStreetModal = false"
     />
     <DeleteStreetModal
       class="cardModal"
       v-if="showDeleteStreetModal"
       :show="showDeleteStreetModal"
+      :id="street.id"
+      :name="street.zone"
       @onConfirm="onDeleteStreet"
       @onClose="showDeleteStreetModal = false"
     />
@@ -36,14 +38,15 @@
 </template>
 
 <script>
-import AddStreetModal from "./AddStreetModal";
 import DeleteStreetModal from "./DeleteStreetModal";
+import UpdateStreetModal from "./UpdateStreetModal";
+import StreetsBackend from "../backend/StreetsBackend";
 
 export default {
   name: "Street",
   components: {
-    AddStreetModal,
     DeleteStreetModal,
+    UpdateStreetModal,
   },
   props: {
     street: {
@@ -53,38 +56,19 @@ export default {
   },
   data() {
     return {
-      showAddStreetModal: false,
+      showUpdateStreetModal: false,
       showDeleteStreetModal: false,
     };
   },
-  created() {},
   methods: {
-    onEdit() {
-      this.showAddStreetModal = true;
-    },
-    onDeleteStreet(id) {
-      console.log(id);
+    async onDeleteStreet(id) {
+      await StreetsBackend.deleteStreet(id);
       this.showDeleteStreetModal = false;
-      // const payload = {
-      //     street: this.street
-      // }
-      // await StreetService.updateStreet(this.street.id, payload)
-      // this.$emit('reloadList')
+      this.$emit("reload");
     },
-    addStreet(updatedStreet) {
-      console.log(updatedStreet);
-      console.log("On Add ");
-      // const payload = {
-      //     name: title,
-      //     desc: description,
-      //     idList: this.list.id
-      // }
-      // this.showAddStreetModal = false
-      // await BoardsService.createCard(payload)
-      // this.loadCards()
-    },
-    updateAddStreetModal(value) {
-      this.showAddStreetModal = value;
+    async updateStreet(updatedStreet) {
+      this.showUpdateStreetModal = false;
+      await StreetsBackend.updateStreet(updatedStreet.id, updatedStreet);
     },
   },
 };

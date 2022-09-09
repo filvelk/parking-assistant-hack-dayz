@@ -1,47 +1,47 @@
-import Axios from 'axios'
+import Axios from "axios";
 
 class BaseBackend {
   constructor() {
     this.axios = Axios.create({
-      baseURL: 'http://192.168.154.146:8080/api'
-    })
+      baseURL: "http://192.168.154.146:8080/api",
+    });
   }
 
   delete(url, data, config) {
     return this.axios({
-      method: 'DELETE',
+      method: "DELETE",
       url,
       data,
-      ...config
-    })
+      ...config,
+    });
   }
 
   get(url, params, config) {
     return this.axios({
-      method: 'GET',
+      method: "GET",
       url,
       params,
-      ...config
-    })
+      ...config,
+    });
   }
 
   post(url, data, config) {
     return this.axios({
-      method: 'POST',
+      method: "POST",
       url,
       data,
-      ...config
-    })
+      ...config,
+    });
   }
 
   put(url, data, config) {
     return this.axios({
-      method: 'PUT',
+      method: "PUT",
       url,
       data,
-      ...config
-    })
+      ...config,
+    });
   }
 }
 
-export default BaseBackend
+export default BaseBackend;
