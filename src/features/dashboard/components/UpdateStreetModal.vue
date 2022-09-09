@@ -15,6 +15,26 @@
                 label="Company phone number"
                 v-model="localStreet.companyPhoneNumber"
               />
+              <div class="coordinates" v-for="(coordinate, index) in localCoordinates" :key="index + 10000">
+                <EditCoordinate
+                  :index="index"
+                  :latitude="coordinate.latitude"
+                  :longitude="coordinate.longitude"
+                  @onLatitudeEdit="onLatitudeEdit"
+                  @onLongitudeEdit="onLongitudeEdit"
+                  @removeCoordinate="removeCoordinate"
+                />
+                <hr />
+              </div>
+              <div>
+                <v-btn
+                  text
+                  class="btn-action teal accent-4"
+                  @click="addCoordinate"
+                >
+                  <i class="fas fa-solid fa-plus"></i>
+                </v-btn>
+              </div>
               <v-select
                 v-model="localStreet.type"
                 :items="['HOURLY', 'START_STOP', 'UNKNOWN']"
@@ -44,9 +64,12 @@
 
 <script>
 import EditTimePickerByDayModal from "./EditTimePickerByDayModal";
+import EditCoordinate from "./EditCoordinate";
+
 export default {
   name: "UpdateStreetModal",
   components: {
+    EditCoordinate,
     EditTimePickerByDayModal
   },
   props: {
@@ -64,13 +87,44 @@ export default {
       title: "",
       description: "",
       localStreet: this.street,
+      localCoordinates: this.street.coordinates,
     };
   },
   methods: {
+    onLatitudeEdit(index, value) {
+      this.localCoordinates = this.localCoordinates.map(
+        (coordinate, i) => {
+          if (i === index) {
+            coordinate.latitude = parseFloat(value)
+          }
+          return coordinate
+        }
+      )
+    },
+    onLongitudeEdit(index, value) {
+      this.localCoordinates = this.localCoordinates.map(
+        (coordinate, i) => {
+          if (i === index) {
+            coordinate.longitude = parseFloat(value)
+          }
+          return coordinate
+        }
+      )
+    },
+    removeCoordinate(id) {
+      this.localCoordinates.splice(id, 1)
+    },
+    addCoordinate() {
+      this.localCoordinates.push({
+        latitude: "",
+        longitude: "",
+      })
+    },
     onClose() {
       this.$emit("onClose", false);
     },
     updateStreet() {
+      this.localStreet.coordinates = this.localCoordinates
       this.localStreet.availabilities = this.localStreet.availabilities.filter(a =>
         a.openingHour && a.closingHour
       )
@@ -84,12 +138,9 @@ export default {
           }
           return availability;
         }
-      );
+      )
     },
     onOpeningTime(time, day) {
-      console.log(time)
-      console.log(day)
-      console.log(this.localStreet.availabilities)
       this.localStreet.availabilities = this.localStreet.availabilities.map(
         (availability) => {
           if (availability.day === day) {
@@ -97,7 +148,7 @@ export default {
           }
           return availability;
         }
-      );
+      )
     }
   },
 };
@@ -106,5 +157,8 @@ export default {
 <style scoped>
 .list {
   background-color: #ebecf0;
+}
+.coordinates {
+  width: 100%
 }
 </style>

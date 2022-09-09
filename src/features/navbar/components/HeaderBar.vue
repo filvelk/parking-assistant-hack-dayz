@@ -15,16 +15,29 @@
         <i class="fas fa-sign-out-alt" />
       </v-btn>
     </v-toolbar-items>
+    <AddStreetModal
+      class="cardModal"
+      v-if="showAddStreetModal"
+      :show="showAddStreetModal"
+      @addStreet="addStreet"
+      @onClose="showAddStreetModal = false"
+    />
   </v-toolbar>
 </template>
 
 <script>
+import AddStreetModal from "../../dashboard/components/AddStreetModal";
 import { mapActions, mapState } from "vuex";
+import StreetsBackend from "../../dashboard/backend/StreetsBackend"
 
 export default {
   name: "HeaderBar",
+  components: {
+    AddStreetModal
+  },
   data() {
     return {
+      showAddStreetModal: false,
       drawer: false,
       regularUserLinks: [
         {
@@ -44,6 +57,10 @@ export default {
       this.setIsUserLoggedIn(false);
       this.$router.push("/login");
     },
+    async addStreet(newStreet) {
+      this.showAddStreetModal = false;
+      await StreetsBackend.createStreet(newStreet);
+    }
   },
 };
 </script>
