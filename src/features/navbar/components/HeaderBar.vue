@@ -4,6 +4,13 @@
     <v-spacer />
     <v-toolbar-items class="hidden-xs-only">
       <v-btn
+        text
+        class="btn-action teal accent-4"
+        @click="showAddStreetModal = true"
+        ><span>Add zone</span>
+        <i class="fas fa-solid fa-plus"></i>
+      </v-btn>
+      <v-btn
         v-if="$route.path === '/dashboard'"
         class="btn-action"
         text
@@ -62,5 +69,10 @@ export default {
 
 span {
   margin-right: 6px;
+}
+
+.toolbar .btn-action {
+  padding: 0 !important;
+  margin-left: 16px;
 }
 </style>
