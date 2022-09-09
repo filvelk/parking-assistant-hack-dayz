@@ -15,6 +15,26 @@
                 label="Company phone number"
                 v-model="street.companyPhoneNumber"
               />
+              <div class="coordinates" v-for="(coordinate, index) in street.coordinates" :key="index + 1000">
+                <Coordinate
+                  :index="index"
+                  :latitude="coordinate.latitude"
+                  :longitude="coordinate.longitude"
+                  @onLatitudeEdit="onLatitudeEdit"
+                  @onLongitudeEdit="onLongitudeEdit"
+                  @removeCoordinate="removeCoordinate"
+                />
+                <hr />
+              </div>
+              <div>
+                <v-btn
+                  text
+                  class="btn-action teal accent-4"
+                  @click="addCoordinate"
+                >
+                  <i class="fas fa-solid fa-plus"></i>
+                </v-btn>
+              </div>
               <v-select
                 v-model="street.type"
                 :items="['HOURLY', 'START_STOP', 'UNKNOWN']"
@@ -42,11 +62,13 @@
 
 <script>
 import TimePickerByDayModal from "./TimePickerByDayModal";
+import Coordinate from "./Coordinate";
 
 export default {
   name: "AddStreetModal",
   components: {
-    TimePickerByDayModal,
+    Coordinate,
+    TimePickerByDayModal
   },
   props: {
     show: {
@@ -100,16 +122,41 @@ export default {
           {
             latitude: "",
             longitude: "",
-          },
-          {
-            latitude: "",
-            longitude: "",
-          },
-        ],
+          }
+        ]
       },
     };
   },
   methods: {
+    onLatitudeEdit(index, value) {
+      this.street.coordinates = this.street.coordinates.map(
+        (coordinate, i) => {
+          if (i === index) {
+            coordinate.latitude = parseFloat(value)
+          }
+          return coordinate
+        }
+      )
+    },
+    onLongitudeEdit(index, value) {
+      this.street.coordinates = this.street.coordinates.map(
+        (coordinate, i) => {
+          if (i === index) {
+            coordinate.longitude = parseFloat(value)
+          }
+          return coordinate
+        }
+      )
+    },
+    removeCoordinate(id) {
+      this.street.coordinates.splice(id, 1)
+    },
+    addCoordinate() {
+      this.street.coordinates.push({
+        latitude: "",
+        longitude: "",
+      })
+    },
     onClose() {
       this.$emit("onClose", false);
     },
@@ -146,5 +193,8 @@ export default {
 <style scoped>
 .list {
   background-color: #ebecf0;
+}
+.coordinates {
+  width: 100%
 }
 </style>
