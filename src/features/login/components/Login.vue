@@ -1,10 +1,10 @@
 <template>
   <v-app>
-    <v-main>
+    <v-main class="main">
       <v-card class="loginWrapper" elevation="4">
         <div>
           <v-toolbar dark color="primary">
-            <v-toolbar-title> Parking asstant </v-toolbar-title>
+            <v-toolbar-title>Enter login details</v-toolbar-title>
           </v-toolbar>
           <v-card-text>
             <v-form>
@@ -13,16 +13,14 @@
                 v-model="username"
                 class="my-5"
                 name="input-10-1"
-                label="Enter username"
-                hint="Enter your username"
+                label="Username"
               />
               <v-text-field
                 id="passowrd"
                 v-model="passowrd"
                 class="my-5"
                 name="input-10-1"
-                label="Enter password"
-                hint="Enter your password"
+                label="Password"
               />
             </v-form>
           </v-card-text>
@@ -36,19 +34,11 @@
               :width="100"
               @click="onLogin"
             >
-              Login
+              Log in
             </v-btn>
           </v-card-actions>
         </div>
       </v-card>
-      <div class="loginWrapper">
-        <v-banner single-line>
-          <b>This is a test</b>
-          <p>
-            <small>If we don't need it, we can delete it</small>
-          </p>
-        </v-banner>
-      </div>
     </v-main>
   </v-app>
 </template>
@@ -71,6 +61,12 @@ export default {
 </script>
 
 <style scoped>
+.main >>> .v-main__wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .loginWrapper {
   width: 40%;
   margin: auto;

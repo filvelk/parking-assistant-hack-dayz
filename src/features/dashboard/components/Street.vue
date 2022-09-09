@@ -1,16 +1,16 @@
 <template>
   <v-card class="d-flex list">
-    <v-card-text class="list-cards">
+    <v-card-text class="list-cards d-flex justify-space-between">
       <h3 class="text--primary">
         {{ street.zone }}
       </h3>
-      <v-card-actions class="d-flex justify-end mb-6">
-        <v-btn text class="btn-action" @click="showUpdateStreetModal = true">
+      <v-card-actions class="d-flex flex-column p-0">
+        <v-btn text class="btn-action first" @click="showUpdateStreetModal = true">
           <i class="fas fa-edit"></i>
         </v-btn>
         <v-btn
           text
-          class="btn-action teal accent-4"
+          class="btn-action red"
           @click="showDeleteStreetModal = true"
         >
           <i class="fas fa-trash-alt"></i>
@@ -78,5 +78,23 @@ export default {
 .list,
 .cardModal {
   background-color: #ebecf0;
+}
+
+.list .btn-action {
+  margin-left: 0 !important;
+}
+
+.list-cards >>> .v-card__actions {
+  padding: 0;
+}
+
+.list-cards >>> .btn-action.first {
+  margin-bottom: 8px !important;
+}
+
+h3.text--primary {
+  font-size: 34px;
+  margin-top: auto;
+  margin-bottom: auto;
 }
 </style>

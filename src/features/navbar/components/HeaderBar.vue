@@ -1,15 +1,16 @@
 <template>
   <v-toolbar dense class="toolbar">
-    <v-toolbar-title class="title">Dashboard</v-toolbar-title>
+    <v-toolbar-title class="title">Parking assistant</v-toolbar-title>
     <v-spacer />
     <v-toolbar-items class="hidden-xs-only">
-      <v-btn v-if="isUserLoggedIn" text @click="signOutUser">
+      <v-btn
+        v-if="$route.path === '/dashboard'"
+        class="btn-action"
+        text
+        @click="signOutUser"
+      >
         <span>Log Out</span>
         <i class="fas fa-sign-out-alt" />
-      </v-btn>
-      <v-btn class="btn-action" v-else :to="'/login'" text>
-        <span class="mr-2">Log In</span>
-        <i class="fas fa-sign-in-alt" />
       </v-btn>
     </v-toolbar-items>
   </v-toolbar>
@@ -51,10 +52,15 @@ export default {
 
 .title {
   color: white;
+  font-size: 30px !important;
 }
 
 .btn-action {
   background-color: #1976d2 !important;
   color: white !important;
+}
+
+span {
+  margin-right: 6px;
 }
 </style>
