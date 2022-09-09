@@ -3,7 +3,12 @@
     <v-toolbar-title class="title">Parking assistant</v-toolbar-title>
     <v-spacer />
     <v-toolbar-items class="hidden-xs-only">
-      <v-btn v-if="isUserLoggedIn" text @click="signOutUser">
+      <v-btn
+        v-if="$route.path === '/dashboard'"
+        class="btn-action"
+        text
+        @click="signOutUser"
+      >
         <span>Log Out</span>
         <i class="fas fa-sign-out-alt" />
       </v-btn>
@@ -47,10 +52,15 @@ export default {
 
 .title {
   color: white;
+  font-size: 30px !important;
 }
 
 .btn-action {
   background-color: #1976d2 !important;
   color: white !important;
+}
+
+span {
+  margin-right: 6px;
 }
 </style>
