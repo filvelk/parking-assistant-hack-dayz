@@ -6,7 +6,7 @@
       v-model="openingMenu"
       :close-on-content-click="false"
       :nudge-right="40"
-      :return-value.sync="openingHour"
+      :return-value.sync="localOpeningHour"
       transition="scale-transition"
       offset-y
       max-width="290px"
@@ -14,35 +14,7 @@
     >
       <template v-slot:activator="{ on, attrs }">
         <v-text-field
-          v-model="openingHour"
-          label="Closing hour"
-          prepend-icon="mdi-clock-time-four-outline"
-          readonly
-          v-bind="attrs"
-          v-on="on"
-        ></v-text-field>
-      </template>
-      <v-time-picker
-        v-if="openingMenu"
-        v-model="openingHour"
-        full-width
-        @click:minute="$refs.openingMenu.save(openingHour), onOpeningTimeSave()"
-      ></v-time-picker>
-    </v-menu>
-    <v-menu
-      ref="closingMenu"
-      v-model="closingMenu"
-      :close-on-content-click="false"
-      :nudge-right="40"
-      :return-value.sync="closingHour"
-      transition="scale-transition"
-      offset-y
-      max-width="290px"
-      min-width="290px"
-    >
-      <template v-slot:activator="{ on, attrs }">
-        <v-text-field
-          v-model="closingHour"
+          v-model="localOpeningHour"
           label="Opening hour"
           prepend-icon="mdi-clock-time-four-outline"
           readonly
@@ -51,10 +23,38 @@
         ></v-text-field>
       </template>
       <v-time-picker
-        v-if="closingMenu"
-        v-model="closingHour"
+        v-if="openingMenu"
+        v-model="localOpeningHour"
         full-width
-        @click:minute="$refs.closingMenu.save(closingHour), onClosingTimeSave()"
+        @click:minute="$refs.openingMenu.save(localOpeningHour), onOpeningTimeSave()"
+      ></v-time-picker>
+    </v-menu>
+    <v-menu
+      ref="closingMenu"
+      v-model="closingMenu"
+      :close-on-content-click="false"
+      :nudge-right="40"
+      :return-value.sync="localClosingHour"
+      transition="scale-transition"
+      offset-y
+      max-width="290px"
+      min-width="290px"
+    >
+      <template v-slot:activator="{ on, attrs }">
+        <v-text-field
+          v-model="localClosingHour"
+          label="Closing hour"
+          prepend-icon="mdi-clock-time-four-outline"
+          readonly
+          v-bind="attrs"
+          v-on="on"
+        ></v-text-field>
+      </template>
+      <v-time-picker
+        v-if="closingMenu"
+        v-model="localClosingHour"
+        full-width
+        @click:minute="$refs.closingMenu.save(localClosingHour), onClosingTimeSave()"
       ></v-time-picker>
     </v-menu>
   </div>
@@ -62,9 +62,17 @@
 
 <script>
 export default {
-  name: "TimePickerByDayModal",
+  name: "EditTimePickerByDayModal",
   props: {
     day: {
+      type: String,
+      default: "",
+    },
+    closingHour: {
+      type: String,
+      default: "",
+    },
+    openingHour: {
       type: String,
       default: "",
     },
@@ -73,18 +81,16 @@ export default {
     return {
       openingMenu: false,
       closingMenu: false,
-      openingHour: null,
-      closingHour: null,
+      localOpeningHour: this.openingHour,
+      localClosingHour: this.closingHour,
     };
   },
   methods: {
     onOpeningTimeSave() {
-      console.log(this.openingHour);
-      this.$emit("onOpeningTime", this.openingHour, this.day);
+      this.$emit("onOpeningTime", this.localOpeningHour, this.day);
     },
     onClosingTimeSave() {
-      console.log(this.closingHour);
-      this.$emit("onClosingTime", this.closingHour, this.day);
+      this.$emit("onClosingTime", this.localClosingHour, this.day);
     },
   },
 };

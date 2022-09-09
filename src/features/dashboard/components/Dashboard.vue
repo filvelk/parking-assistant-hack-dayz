@@ -8,7 +8,7 @@
             class="btn-action teal accent-4"
             @click="showAddStreetModal = true"
           >
-            <i class="fa-solid fa-plus"></i>
+            Add new zone
           </v-btn>
         </v-row> -->
         <v-row>

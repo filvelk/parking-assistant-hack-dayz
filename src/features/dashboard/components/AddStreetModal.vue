@@ -15,8 +15,8 @@
                 label="Company phone number"
                 v-model="street.companyPhoneNumber"
               />
-              <v-text-field label="" v-model="street.type" />
               <v-select
+                v-model="street.type"
                 :items="['HOURLY', 'START_STOP', 'UNKNOWN']"
                 label="Type"
               ></v-select>
@@ -75,25 +75,25 @@ export default {
         type: "HOURLY",
         availabilities: [
           {
-            day: "Monday",
+            day: "MONDAY",
           },
           {
-            day: "Tuesday",
+            day: "TUESDAY",
           },
           {
-            day: "Wednesday",
+            day: "WEDNESDAY",
           },
           {
-            day: "Thursday",
+            day: "THURSDAY",
           },
           {
-            day: "Friday",
+            day: "FRIDAY",
           },
           {
-            day: "Saturday",
+            day: "SATURDAY",
           },
           {
-            day: "Sunday",
+            day: "SUNDAY",
           },
         ],
         coordinates: [
@@ -114,6 +114,9 @@ export default {
       this.$emit("onClose", false);
     },
     addStreet() {
+      this.street.availabilities = this.street.availabilities.filter(a =>
+        a.openingHour && a.closingHour
+      )
       this.$emit("addStreet", this.street);
     },
     onClosingTime(time, day) {
@@ -130,12 +133,12 @@ export default {
       this.street.availabilities = this.street.availabilities.map(
         (availability) => {
           if (availability.day === day) {
-            availability.onOpeningTime = time;
+            availability.openingHour = time;
           }
           return availability;
         }
       );
-    },
+    }
   },
 };
 </script>
