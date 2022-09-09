@@ -15,13 +15,37 @@
                     <v-container>
                         <v-row>
                             <v-text-field
-                                label="Title"
-                                v-model="title"
+                                label="Zone"
+                                v-model="localStreet.zone"
                             />
                             <v-text-field
-                                label="Description"
-                                v-model="description"
+                                label="Price"
+                                v-model="localStreet.price"
                             />
+                            <v-text-field
+                                label="Company"
+                                v-model="localStreet.company"
+                            />
+                            <v-text-field
+                                label="Company phone number"
+                                v-model="localStreet.companyPhoneNumber"
+                            />
+                            <v-text-field
+                                label="Type"
+                                v-model="localStreet.type"
+                            />
+                            <v-text-field
+                                label="Opening hour"
+                                v-model="localStreet.openingHour"
+                            />
+                            <v-text-field
+                                label="Closing Hour"
+                                v-model="localStreet.closingHour"
+                            />
+<!--                            <v-text-field-->
+<!--                                label="Price"-->
+<!--                                v-model="localStreet.coordinates"-->
+<!--                            />-->
                         </v-row>
                     </v-container>
                 </v-card-text>
@@ -37,10 +61,9 @@
                     <v-btn
                         color="blue darken-1"
                         text
-                        :disabled="!title"
-                        @click="addCard"
+                        @click="addStreet"
                     >
-                        Add
+                        Confirm
                     </v-btn>
                 </v-card-actions>
             </v-card>
@@ -55,12 +78,17 @@
             show: {
                 type: Boolean,
                 default: false
+            },
+            street: {
+                type: Object,
+                default: () => ({})
             }
         },
         data() {
             return {
                 title: '',
-                description: ''
+                description: '',
+                localStreet: this.street
             }
         },
         methods: {
@@ -68,7 +96,7 @@
                 this.$emit('onClose', false)
             },
             addStreet() {
-                this.$emit('addStreet', this.title, this.description)
+                this.$emit('addStreet', this.localStreet)
             }
         }
     }

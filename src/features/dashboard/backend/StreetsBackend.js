@@ -6,7 +6,7 @@ class StreetsBackend extends BaseBackend {
   }
 
   getStreets() {
-    return this.get('/streets')
+    return this.get('/parking-locations')
   }
 
   createStreet(payload) {
