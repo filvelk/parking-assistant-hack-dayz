@@ -5,15 +5,15 @@ export const getStreets = () => {
 }
 
 export const deleteStreet = (id) => {
-    return StreetsBackend.deleteStreetById(id)
+    return StreetsBackend.deleteStreet(id)
 }
 
 export const updateStreet = (id, payload) => {
-    return StreetsBackend.updateStreetList(id, payload)
+    return StreetsBackend.updateStreet(id, payload)
 }
 
-export const createStreet = (id, payload) => {
-    return StreetsBackend.createCard(id, payload)
+export const createStreet = (payload) => {
+    return StreetsBackend.createStreet(payload)
 }
 
 export default {

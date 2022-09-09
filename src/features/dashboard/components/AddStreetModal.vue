@@ -16,36 +16,38 @@
                         <v-row>
                             <v-text-field
                                 label="Zone"
-                                v-model="localStreet.zone"
+                                v-model="street.zone"
                             />
                             <v-text-field
                                 label="Price"
-                                v-model="localStreet.price"
+                                v-model="street.price"
                             />
                             <v-text-field
                                 label="Company"
-                                v-model="localStreet.company"
+                                v-model="street.company"
                             />
                             <v-text-field
                                 label="Company phone number"
-                                v-model="localStreet.companyPhoneNumber"
+                                v-model="street.companyPhoneNumber"
                             />
                             <v-text-field
+                                label=""
+                                v-model="street.type"
+                            />
+                            <v-select
+                                :items="['HOURLY', 'START_STOP', 'UNKNOWN']"
                                 label="Type"
-                                v-model="localStreet.type"
-                            />
-                            <v-text-field
-                                label="Opening hour"
-                                v-model="localStreet.openingHour"
-                            />
-                            <v-text-field
-                                label="Closing Hour"
-                                v-model="localStreet.closingHour"
-                            />
-<!--                            <v-text-field-->
-<!--                                label="Price"-->
-<!--                                v-model="localStreet.coordinates"-->
-<!--                            />-->
+                            ></v-select>
+                            <div
+                                v-for="(day, index) in days"
+                                :key="index"
+                            >
+                                <TimePickerByDayModal
+                                    :day="day"
+                                    @onOpeningTime="onOpeningTime"
+                                    @onClosingTime="onClosingTime"
+                                />
+                            </div>
                         </v-row>
                     </v-container>
                 </v-card-text>
@@ -72,34 +74,91 @@
 </template>
 
 <script>
-    export default {
-        name: 'AddStreetModal',
-        props: {
-            show: {
-                type: Boolean,
-                default: false
-            },
+import TimePickerByDayModal from './TimePickerByDayModal'
+
+export default {
+    name: 'AddStreetModal',
+    components: {
+        TimePickerByDayModal
+    },
+    props: {
+        show: {
+            type: Boolean,
+            default: false
+        }
+    },
+    data() {
+        return {
+            menu: false,
+            time: null,
+            days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
             street: {
-                type: Object,
-                default: () => ({})
-            }
-        },
-        data() {
-            return {
-                title: '',
-                description: '',
-                localStreet: this.street
-            }
-        },
-        methods: {
-            onClose() {
-                this.$emit('onClose', false)
-            },
-            addStreet() {
-                this.$emit('addStreet', this.localStreet)
+                price: 10.0,
+                zone: '',
+                company: '',
+                companyPhoneNumber: '',
+                type: 'HOURLY',
+                availabilities: [
+                    {
+                        day: 'Monday'
+                    },
+                    {
+                        day: 'Tuesday'
+                    },
+                    {
+                        day: 'Wednesday'
+                    },
+                    {
+                        day: 'Thursday'
+                    },
+                    {
+                        day: 'Friday'
+                    },
+                    {
+                        day: 'Saturday'
+                    },
+                    {
+                        day: 'Sunday'
+                    }
+                ],
+                coordinates: [
+                    {
+                        latitude: '',
+                        longitude: ''
+                    },
+                    {
+                        latitude: '',
+                        longitude: ''
+                    }
+                ]
             }
         }
+    },
+    methods: {
+        onClose() {
+            this.$emit('onClose', false)
+        },
+        addStreet() {
+            this.$emit('addStreet', this.street)
+        },
+        onClosingTime(time, day) {
+            this.street.availabilities = this.street.availabilities.map(availability => {
+                if (availability.day === day) {
+                    availability.closingHour = time
+                }
+                return availability
+            })
+        },
+        onOpeningTime(time, day) {
+            this.street.availabilities = this.street.availabilities.map(availability => {
+                if (availability.day === day) {
+                    availability.onOpeningTime = time
+                }
+                return availability
+            })
+        }
     }
+}
 </script>
 
 <style scoped>

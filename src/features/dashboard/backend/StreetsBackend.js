@@ -10,15 +10,15 @@ class StreetsBackend extends BaseBackend {
   }
 
   createStreet(payload) {
-    return this.post('/street', payload)
+    return this.post('/parking-locations', payload)
   }
 
-  updateStreetById(id, payload) {
-    return this.put(`/street/${id}`, payload)
+  updateStreet(id, payload) {
+    return this.put(`/parking-locations/${id}`, payload)
   }
 
   deleteStreet(id) {
-    return this.delete(`/1/boards/${id}`)
+    return this.delete(`/parking-locations/${id}`)
   }
 }
 
