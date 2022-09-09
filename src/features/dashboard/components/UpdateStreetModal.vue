@@ -20,21 +20,22 @@
                 :items="['HOURLY', 'START_STOP', 'UNKNOWN']"
                 label="Type"
               ></v-select>
-              <v-text-field
-                label="Opening hour"
-                v-model="localStreet.openingHour"
-              />
-              <v-text-field
-                label="Closing Hour"
-                v-model="localStreet.closingHour"
-              />
+              <div v-for="(availability, index) in localStreet.availabilities" :key="index">
+                <EditTimePickerByDayModal
+                  :day="availability.day"
+                  :closing-hour="availability.closingHour"
+                  :opening-hour="availability.closingHour"
+                  @onOpeningTime="onOpeningTime"
+                  @onClosingTime="onClosingTime"
+                />
+              </div>
             </v-row>
           </v-container>
         </v-card-text>
         <v-card-actions>
           <v-spacer />
           <v-btn color="blue darken-1" text @click="onClose"> Close </v-btn>
-          <v-btn color="blue darken-1" text @click="addStreet"> Confirm </v-btn>
+          <v-btn color="blue darken-1" text @click="updateStreet"> Confirm </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -42,8 +43,12 @@
 </template>
 
 <script>
+import EditTimePickerByDayModal from "./EditTimePickerByDayModal";
 export default {
   name: "UpdateStreetModal",
+  components: {
+    EditTimePickerByDayModal
+  },
   props: {
     show: {
       type: Boolean,
@@ -66,8 +71,34 @@ export default {
       this.$emit("onClose", false);
     },
     updateStreet() {
+      this.localStreet.availabilities = this.localStreet.availabilities.filter(a =>
+        a.openingHour && a.closingHour
+      )
       this.$emit("updateStreet", this.localStreet);
     },
+    onClosingTime(time, day) {
+      this.localStreet.availabilities = this.localStreet.availabilities.map(
+        (availability) => {
+          if (availability.day === day) {
+            availability.closingHour = time;
+          }
+          return availability;
+        }
+      );
+    },
+    onOpeningTime(time, day) {
+      console.log(time)
+      console.log(day)
+      console.log(this.localStreet.availabilities)
+      this.localStreet.availabilities = this.localStreet.availabilities.map(
+        (availability) => {
+          if (availability.day === day) {
+            availability.openingHour = time;
+          }
+          return availability;
+        }
+      );
+    }
   },
 };
 </script>
