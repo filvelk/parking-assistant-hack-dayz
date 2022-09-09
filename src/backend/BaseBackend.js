@@ -3,7 +3,7 @@ import Axios from 'axios'
 class BaseBackend {
   constructor() {
     this.axios = Axios.create({
-      baseURL: '/'
+      baseURL: 'http://192.168.154.146:8080/api'
     })
   }
 

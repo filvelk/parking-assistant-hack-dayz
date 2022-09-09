@@ -8,11 +8,11 @@
             <v-layout row wrap>
                 <v-flex
                     class="xs4"
-                    v-for="board in getStreets"
-                    :key="board.id"
+                    v-for="street in getStreets"
+                    :key="street.id"
                 >
                     <Street
-                        :name="name"
+                        :street="street"
                         @reload="loadStreets"
                     />
                 </v-flex>
@@ -22,8 +22,13 @@
 </template>
 
 <script>
+import Street from './Street'
+import StreetsBackend from "../backend/StreetsBackend"
 export default {
     name: 'Dashboard',
+    components: {
+        Street
+    },
     data() {
         return {
             streets: []
@@ -31,20 +36,83 @@ export default {
     },
     computed: {
         getStreets() {
-            return this.streets
+            return this.streets.data
         }
     },
     created() {
         this.loadStreets()
     },
     methods: {
-        loadStreets() {
-            // Tuka ke prajme api call do BE
-            this.streets = [
-                { id: 1, name: 'Ul. test' },
-                { id: 2, name: 'Ul. test 1' },
-                { id: 3, name: 'Ul. test 2' }
-            ]
+        async loadStreets() {
+            this.streets = await StreetsBackend.getStreets()
+            /*this.streets = [
+                {
+                    id: 1,
+                    price: 30.0,
+                    zone: "C1",
+                    company: "test",
+                    companyPhoneNumber: "+4565454",
+                    type: "HOURLY",
+                    openingHour: "07:00",
+                    closingHour: "23:00",
+                    coordinates: [
+                        {
+                            "id": 9,
+                            "latitude": 41.40338,
+                            "longitude": 2.17403
+                        },
+                        {
+                            "id": 10,
+                            "latitude": 45.40338,
+                            "longitude": 7.17403
+                        }
+                    ]
+                },
+                {
+                    id: 2,
+                    price: 30.0,
+                    zone: "C1",
+                    company: "test",
+                    companyPhoneNumber: "+4565454",
+                    type: "HOURLY",
+                    openingHour: "07:00",
+                    closingHour: "23:00",
+                    coordinates: [
+                        {
+                            "id": 9,
+                            "latitude": 41.40338,
+                            "longitude": 2.17403
+                        },
+                        {
+                            "id": 10,
+                            "latitude": 45.40338,
+                            "longitude": 7.17403
+                        }
+                    ]
+                },
+                {
+                    id: 3,
+                    price: 30.0,
+                    zone: "C1",
+                    company: "test",
+                    companyPhoneNumber: "+4565454",
+                    type: "HOURLY",
+                    openingHour: "07:00",
+                    closingHour: "23:00",
+                    coordinates: [
+                        {
+                            "id": 9,
+                            "latitude": 41.40338,
+                            "longitude": 2.17403
+                        },
+                        {
+                            "id": 10,
+                            "latitude": 45.40338,
+                            "longitude": 7.17403
+                        }
+                    ]
+                }
+            ]*/
         }
     }
 }

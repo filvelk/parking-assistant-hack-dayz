@@ -1,25 +1,25 @@
 <template>
     <v-card
-            class="d-flex list"
+        class="d-flex list"
     >
         <v-card-text
-                class="list-cards"
+            class="list-cards"
         >
             <h3 class="text--primary">
-                {{ list.name }}
+                {{ street.zone }}
             </h3>
             <v-card-actions class="d-flex justify-end mb-6">
                 <v-btn
-                        text
-                        class="btn-action"
-                        @click="onEdit"
+                    text
+                    class="btn-action"
+                    @click="onEdit"
                 >
                     <i class="fas fa-edit"></i>
                 </v-btn>
                 <v-btn
-                        text
-                        class="btn-action teal accent-4"
-                        @click="onDelete"
+                    text
+                    class="btn-action teal accent-4"
+                    @click="showDeleteStreetModal = true"
                 >
                     <i class="fas fa-trash-alt"></i>
                 </v-btn>
@@ -29,31 +29,40 @@
             class="cardModal"
             v-if="showAddStreetModal"
             :show="showAddStreetModal"
+            :street="street"
             @addStreet="addStreet"
-            @onClose="updateAddStreetModal"
+            @onClose="showAddStreetModal = false"
+        />
+        <DeleteStreetModal
+            class="cardModal"
+            v-if="showDeleteStreetModal"
+            :show="showDeleteStreetModal"
+            @onConfirm="onDeleteStreet"
+            @onClose="showDeleteStreetModal = false"
         />
     </v-card>
 </template>
 
 <script>
 import AddStreetModal from './AddStreetModal'
+import DeleteStreetModal from './DeleteStreetModal'
 
 export default {
     name: 'Street',
     components: {
-        AddStreetModal
+        AddStreetModal,
+        DeleteStreetModal
     },
     props: {
-        list: {
+        street: {
             type: Object,
-            default: () => {
-            }
+            default: () => {}
         }
     },
     data() {
         return {
-            cards: [],
-            showAddStreetModal: false
+            showAddStreetModal: false,
+            showDeleteStreetModal: false
         }
     },
     created() {},
@@ -61,15 +70,17 @@ export default {
         onEdit() {
             this.showAddStreetModal = true
         },
-        onDelete() {
-            console.log('On Delete')
+        onDeleteStreet(id) {
+            console.log(id)
+            this.showDeleteStreetModal = false
             // const payload = {
             //     street: this.street
             // }
             // await StreetService.updateStreet(this.street.id, payload)
             // this.$emit('reloadList')
         },
-        async addStreet() {
+        addStreet(updatedStreet) {
+            console.log(updatedStreet)
             console.log('On Add ')
             // const payload = {
             //     name: title,
